@@ -13,7 +13,6 @@ static SemaphoreHandle_t sync_print_task;
 static SemaphoreHandle_t sync_adc_task;
 
 static float Temp;
-static float Verf_5V;
 
-static uint32_t voltage_0;
-static uint32_t voltage_6;
+
+static float pwm_duty;

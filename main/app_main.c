@@ -1,6 +1,7 @@
 #include "app_main.h"
 #include "temp_adc.c"
 #include "data_print.c"
+#include "pwm_fan.c"
 
 void app_main(void)
 {
@@ -20,11 +21,21 @@ void app_main(void)
 	
 	xTaskCreatePinnedToCore(get_temp_task, "temp", 4096, NULL, 2, NULL, tskNO_AFFINITY);
 
+	xTaskCreatePinnedToCore(duty_calcu_task, "calcu", 4096, (void*)5, 2, NULL, 1);
 	
 	xTaskCreatePinnedToCore(data_print_task, "print", 4096, (void*)5, 2, NULL, 1);
 
 	xSemaphoreGive(sync_adc_task);
 	xSemaphoreGive(sync_temp_task);
 	xSemaphoreGive(sync_print_task);
+	xSemaphoreGive(sync_calcu_task);
 	
+	/***
+	TaskHandle_t xHandle = NULL;
+	// Use the handle to delete the task.
+	if( xHandle != NULL )
+	{
+		vTaskDelete( xHandle );
+	}
+	***/
 }

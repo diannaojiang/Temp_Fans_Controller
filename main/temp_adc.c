@@ -74,7 +74,7 @@ static void temp_init(void)
 	if (unit == ADC_UNIT_1) {
 		adc1_config_width(width);
 		adc1_config_channel_atten(ADC_CHANNEL_6, atten);
-		adc1_config_channel_atten(ADC_CHANNEL_0, ADC_ATTEN_DB_6);
+		adc1_config_channel_atten(ADC_CHANNEL_7, ADC_ATTEN_DB_6);
 	} else {
 		adc2_config_channel_atten((adc2_channel_t)ADC_CHANNEL_6, atten);
 	}
@@ -106,7 +106,7 @@ static uint32_t get_adc_data(adc_channel_t channel)
 	adc_reading /= NO_OF_SAMPLES;
 	//Convert adc_reading to voltage in mV
 	static uint32_t voltage;
-	if(channel == ADC_CHANNEL_0){
+	if(channel == ADC_CHANNEL_7){
 		voltage = esp_adc_cal_raw_to_voltage(adc_reading, adc_chars_5v);
 	}else{
 		voltage = esp_adc_cal_raw_to_voltage(adc_reading, adc_chars);
@@ -119,7 +119,7 @@ static void get_adc_data_task(void *arg)
 	
 	//Continuously sample ADC1
 	while (1) {
-		voltage_0 = get_adc_data(ADC_CHANNEL_0);
+		voltage_7 = get_adc_data(ADC_CHANNEL_7);
 		for (uint32_t i = 0; i < 10; i++)
 		{
 			voltage_6 = get_adc_data(ADC_CHANNEL_6);
@@ -135,7 +135,7 @@ static void get_temp_task(void *arg)
 	xSemaphoreTake(sync_temp_task, portMAX_DELAY);
 	//Continuously sample ADC1
 	while (1) {
-		Verf_5V = voltage_0*3.35;
+		Verf_5V = voltage_7*3.35;
 		static uint32_t voltage;
 		voltage = voltage_6;
 		float Res = 20000.0/(Verf_5V-voltage*1.0)*voltage;

@@ -5,7 +5,7 @@ static void data_print_task(void *arg)
 	while(1)
 	{
 		//printf("%d\n", (uint32_t)arg);
-		printf("v0: %d\tv6: %d\tVerf_5V: %fmV\tTemp: %f℃\n", voltage_0, voltage_6, Verf_5V, Temp);
+		printf("Temp: %f℃\tDuty: %f%%\n", Temp, pwm_duty);
 		vTaskDelay(pdMS_TO_TICKS(1000));
 	}
 }

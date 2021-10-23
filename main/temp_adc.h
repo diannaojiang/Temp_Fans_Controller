@@ -20,3 +20,7 @@ static const adc_bits_width_t width = ADC_WIDTH_BIT_13;
 static const adc_atten_t atten = ADC_ATTEN_DB_11;
 static const adc_unit_t unit = ADC_UNIT_1;
 
+static uint32_t voltage_7;
+static uint32_t voltage_6;
+
+static float Verf_5V;
