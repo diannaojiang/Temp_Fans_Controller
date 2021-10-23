@@ -123,7 +123,7 @@ static void get_adc_data_task(void *arg)
 		for (uint32_t i = 0; i < 10; i++)
 		{
 			voltage_6 = get_adc_data(ADC_CHANNEL_6);
-			vTaskDelay(pdMS_TO_TICKS(1000));
+			vTaskDelay(pdMS_TO_TICKS(100));
 		}
 		
 

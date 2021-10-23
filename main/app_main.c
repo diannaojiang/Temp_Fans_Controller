@@ -16,12 +16,12 @@ void app_main(void)
 
 
 	
-	xTaskCreatePinnedToCore(get_adc_data_task, "adc", 4096, 0, 2, NULL, tskNO_AFFINITY);
+	xTaskCreatePinnedToCore(get_adc_data_task, "adc", 4096, NULL, 2, NULL, 0);
 	
 	xTaskCreatePinnedToCore(get_temp_task, "temp", 4096, NULL, 2, NULL, tskNO_AFFINITY);
 
 	
-	xTaskCreatePinnedToCore(data_print_task, "print", 4096, (void*)5, 2, NULL, tskNO_AFFINITY);
+	xTaskCreatePinnedToCore(data_print_task, "print", 4096, (void*)5, 2, NULL, 1);
 
 	xSemaphoreGive(sync_adc_task);
 	xSemaphoreGive(sync_temp_task);
