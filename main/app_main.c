@@ -1,20 +1,30 @@
 #include "app_main.h"
 #include "temp_adc.c"
+#include "data_print.c"
 
 void app_main(void)
 {
-    //Allow other core to finish initialization
-    vTaskDelay(pdMS_TO_TICKS(100));
-    
-    temp_init();
+	//Allow other core to finish initialization
+	vTaskDelay(pdMS_TO_TICKS(100));
+	
+	temp_init();
 
-    sync_temp_task = xSemaphoreCreateBinary();
-    sync_calcu_task = xSemaphoreCreateBinary();
-    sync_print_task = xSemaphoreCreateBinary();
+	sync_temp_task = xSemaphoreCreateBinary();
+	sync_calcu_task = xSemaphoreCreateBinary();
+	sync_print_task = xSemaphoreCreateBinary();
+	sync_adc_task = xSemaphoreCreateBinary();
 
 
-    
-    xTaskCreatePinnedToCore(get_temp_task, "stats", 4096, NULL, 2, NULL, tskNO_AFFINITY);
-    xSemaphoreGive(sync_temp_task);
-    
+	
+	xTaskCreatePinnedToCore(get_adc_data_task, "adc", 4096, 0, 2, NULL, tskNO_AFFINITY);
+	
+	xTaskCreatePinnedToCore(get_temp_task, "temp", 4096, NULL, 2, NULL, tskNO_AFFINITY);
+
+	
+	xTaskCreatePinnedToCore(data_print_task, "print", 4096, (void*)5, 2, NULL, tskNO_AFFINITY);
+
+	xSemaphoreGive(sync_adc_task);
+	xSemaphoreGive(sync_temp_task);
+	xSemaphoreGive(sync_print_task);
+	
 }
